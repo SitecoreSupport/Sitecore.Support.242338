@@ -98,6 +98,11 @@ namespace Sitecore.Support.XA.Foundation.Search.Extensions
                             DateTime? startDate = ParseToDateTime(values[0]);
                             DateTime? endDate = ParseToDateTime(values[1]);
 
+                            if (endDate.HasValue)
+                            {
+                                endDate = new DateTime(endDate.Value.AddDays(1).Ticks, DateTimeKind.Utc);
+                            }
+
                             string startValue = startDate?.ToString(dateFormat) ?? string.Empty;
                             string endValue = endDate?.ToString(dateFormat) ?? string.Empty;
 
@@ -151,6 +156,10 @@ namespace Sitecore.Support.XA.Foundation.Search.Extensions
                         if (!string.IsNullOrEmpty(dateFormat))
                         {
                             DateTime? endDate = ParseToDateTime(values[1]);
+                            if (endDate.HasValue)
+                            {
+                                endDate = new DateTime(endDate.Value.AddDays(1).Ticks, DateTimeKind.Utc);
+                            }
                             string endValue = endDate?.ToString(dateFormat) ?? string.Empty;
                             return i => string.Compare(i.get_Item<string>(index), endValue, StringComparison.Ordinal) <= 0;
                         }

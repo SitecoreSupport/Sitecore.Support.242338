@@ -99,8 +99,8 @@ namespace Sitecore.Support.XA.Foundation.Search.Extensions
                             DateTime? startDate = ParseToDateTime(values[0]);
                             DateTime? endDate = ParseToDateTime(values[1]);
 
-                            string startValue = startDate.HasValue ? startDate.Value.ToString(dateFormat) : string.Empty;
-                            string endValue = endDate.HasValue ? endDate.Value.ToString(dateFormat) : string.Empty;
+                            string startValue = startDate?.ToString(dateFormat) ?? string.Empty;
+                            string endValue = endDate?.ToString(dateFormat) ?? string.Empty;
 
                             return i => i.get_Item<string>(index).Between(startValue, endValue, Inclusion.Both);
                         }
@@ -127,7 +127,7 @@ namespace Sitecore.Support.XA.Foundation.Search.Extensions
                         if (!String.IsNullOrEmpty(dateFormat))
                         {
                             DateTime? startDate = ParseToDateTime(values[0]);
-                            string startValue = startDate.HasValue ? startDate.Value.ToString(dateFormat) : string.Empty;
+                            string startValue = startDate?.ToString(dateFormat) ?? string.Empty;
                             return i => string.Compare(i.get_Item<string>(index), startValue, StringComparison.Ordinal) >= 0;
                         }
                     }
@@ -152,7 +152,7 @@ namespace Sitecore.Support.XA.Foundation.Search.Extensions
                         if (!String.IsNullOrEmpty(dateFormat))
                         {
                             DateTime? endDate = ParseToDateTime(values[1]);
-                            string endValue = endDate.HasValue ? endDate.Value.ToString(dateFormat) : string.Empty;
+                            string endValue = endDate?.ToString(dateFormat) ?? string.Empty;
                             return i => string.Compare(i.get_Item<string>(index), endValue, StringComparison.Ordinal) <= 0;
                         }
                     }
@@ -181,14 +181,9 @@ namespace Sitecore.Support.XA.Foundation.Search.Extensions
             return i => i[key] == value;
         }
 
-        private static DateTime? ParseToDateTime(string value, string format = "yyyyMMdd")
+        private static DateTime? ParseToDateTime(string value)
         {
-            DateTime parsed;
-            if (DateTime.TryParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsed))
-            {
-                return parsed;
-            }
-            return null;
+            return DateUtil.ToUniversalTime(DateUtil.IsoDateToDateTime(value, DateTime.MinValue));
         }
 
         private static string GetDateTimeFieldFormat(string fieldName)

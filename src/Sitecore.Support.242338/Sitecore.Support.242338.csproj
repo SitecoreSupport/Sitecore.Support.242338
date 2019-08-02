@@ -85,6 +85,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XA\Foundation\Search\Pipelines\IoC\RegisterSearchServices.cs" />
     <Compile Include="XA\Foundation\Search\Extensions\FacetExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XA\Foundation\Search\Services\SearchService.cs" />
